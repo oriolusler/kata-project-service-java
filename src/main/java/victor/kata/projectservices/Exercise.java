@@ -43,14 +43,9 @@ public class Exercise {
         } else {
             List<Service> services = serviceService.findAll();
 
-            List<Service> userServices = new ArrayList<>();
-            for (Service service : services) {
-                boolean exists = projectUser.getServices().contains(service.getName());
-
-                if (exists) {
-                    userServices.add(service);
-                }
-            }
+            List<Service> userServices = services.stream()
+                    .filter(service -> projectUser.getServices().contains(service.getName()))
+                    .collect(toList());
 
             for (Service service : userServices) {
                 ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
