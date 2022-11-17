@@ -47,12 +47,17 @@ public class Exercise {
                     .filter(service -> projectUser.getServices().contains(service.getName()))
                     .collect(toList());
 
+            List<Service> subscribedServices = new ArrayList<>();
             for (Service service : userServices) {
                 Optional<ProjectServices> projectServices = projectServicesService.findByServiceAndProject(service, project);
                 if (projectServices.isPresent() && projectServices.get().isSubscribed()) {
-                    ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
-                    userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, projectUser.getRole().name());
+                    subscribedServices.add(service);
                 }
+            }
+
+            for (Service service : subscribedServices) {
+                ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
+                userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, projectUser.getRole().name());
             }
         }
     }
