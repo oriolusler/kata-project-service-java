@@ -48,8 +48,8 @@ public class Exercise {
                     .collect(toList());
 
             for (Service service : userServices) {
-                ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
-                if (projectServices1 != null && projectServices1.isSubscribed()) {
+                ProjectServices projectServices = projectServicesService.findByServiceAndProject(service, project);
+                if (projectServices != null && projectServices.isSubscribed()) {
                     ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
                     User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
                     if (projectUser.getRole() == VIEW) {
