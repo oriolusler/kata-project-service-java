@@ -3,6 +3,7 @@ package victor.kata.projectservices;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static victor.kata.projectservices.ProjectUserRoleType.ADMIN;
@@ -48,8 +49,8 @@ public class Exercise {
                     .collect(toList());
 
             for (Service service : userServices) {
-                ProjectServices projectServices = projectServicesService.findByServiceAndProject(service, project);
-                if (projectServices != null && projectServices.isSubscribed()) {
+                Optional<ProjectServices> projectServices = projectServicesService.findByServiceAndProject(service, project);
+                if (projectServices.isPresent() && projectServices.get().isSubscribed()) {
                     ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
                     User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
                     if (projectUser.getRole() == VIEW) {
