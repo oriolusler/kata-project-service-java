@@ -41,18 +41,11 @@ public class Exercise {
             dtos.forEach(dto -> userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, ADMIN.name()));
 
         } else {
-            List<String> projectServices = projectUser.getServices();
             List<Service> services = serviceService.findAll();
 
             List<Service> userServices = new ArrayList<>();
             for (Service service : services) {
-                boolean exists = false;
-                for (String serviceName : projectServices) {
-                    if (serviceName.equals(service.getName())) {
-                        exists = true;
-                        break;
-                    }
-                }
+                boolean exists = projectUser.getServices().stream().anyMatch(serviceName -> serviceName.equals(service.getName()));
 
                 if (exists) {
                     userServices.add(service);
