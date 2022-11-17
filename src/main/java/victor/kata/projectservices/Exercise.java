@@ -31,10 +31,11 @@ public class Exercise {
                     .filter(ProjectServices::isSubscribed)
                     .collect(toList());
 
+            User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
+
             subscribedServices.forEach(subscribedProjectService -> {
                 ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
                 projectServicesDTO.setService(subscribedProjectService.getService());
-                User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
                 userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ADMIN.name());
             });
         } else {
