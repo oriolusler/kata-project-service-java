@@ -30,6 +30,13 @@ public class Exercise {
                     .filter(ProjectServices::isSubscribed)
                     .collect(toList());
 
+
+            List<ProjectServiceDto> dtos = projectServices.stream()
+                    .filter(ProjectServices::isSubscribed)
+                    .map(ps -> new ProjectServiceDto(ps.getService()))
+                    .collect(toList());
+
+
             User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
 
             for (ProjectServices subscribedProjectService : subscribedServices) {
