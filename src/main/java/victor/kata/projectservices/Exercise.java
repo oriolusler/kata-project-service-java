@@ -45,7 +45,7 @@ public class Exercise {
 
             List<Service> userServices = new ArrayList<>();
             for (Service service : services) {
-                boolean exists = projectUser.getServices().stream().anyMatch(serviceName -> serviceName.equals(service.getName()));
+                boolean exists = projectUser.getServices().contains(service.getName());
 
                 if (exists) {
                     userServices.add(service);
