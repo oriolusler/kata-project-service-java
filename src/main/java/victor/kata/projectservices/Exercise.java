@@ -33,12 +33,18 @@ public class Exercise {
                     .filter(ProjectServices::isSubscribed)
                     .collect(toList());
 
-            List<ProjectServiceDto> dtos = projectServices.stream()
+            List<Service> servicesToSend = projectServices.stream()
                     .filter(ProjectServices::isSubscribed)
-                    .map(ps -> new ProjectServiceDto(ps.getService()))
+                    .map(ProjectServices::getService)
                     .collect(toList());
 
-            dtos.forEach(dto -> userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, ADMIN.name()));
+            List<ProjectServiceDto> dtos = servicesToSend.stream()
+                    .map(ProjectServiceDto::new)
+                    .collect(toList());
+
+            for (ProjectServiceDto dto : dtos) {
+                userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, ADMIN.name());
+            }
 
         } else {
             List<Service> services = serviceService.findAll();
