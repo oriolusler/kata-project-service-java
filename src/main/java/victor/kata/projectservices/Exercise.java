@@ -25,14 +25,13 @@ public class Exercise {
     }
 
     public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
+        User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
         if (projectUser.getRole() == ADMIN) {
             List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
 
             List<ProjectServices> subscribedServices = projectServices.stream()
                     .filter(ProjectServices::isSubscribed)
                     .collect(toList());
-
-            User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
 
             List<ProjectServiceDto> dtos = projectServices.stream()
                     .filter(ProjectServices::isSubscribed)
@@ -52,7 +51,6 @@ public class Exercise {
                 Optional<ProjectServices> projectServices = projectServicesService.findByServiceAndProject(service, project);
                 if (projectServices.isPresent() && projectServices.get().isSubscribed()) {
                     ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
-                    User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
                     userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, projectUser.getRole().name());
                 }
             }
