@@ -45,11 +45,17 @@ public class Exercise {
             List<Service> services = serviceService.findAll();
 
             List<Service> userServices = new ArrayList<>();
-            for (String serviceName : projectServices) {
-                for (Service service : services) {
+            for (Service service : services) {
+                boolean exists = false;
+                for (String serviceName : projectServices) {
                     if (serviceName.equals(service.getName())) {
-                        userServices.add(service);
+                        exists = true;
+                        break;
                     }
+                }
+
+                if (exists) {
+                    userServices.add(service);
                 }
             }
 
