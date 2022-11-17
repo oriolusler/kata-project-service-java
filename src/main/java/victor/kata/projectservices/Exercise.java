@@ -49,12 +49,12 @@ public class Exercise {
         } else {
             List<Service> services = serviceService.findAll();
 
-            List<Service> subscribedServices = services.stream()
+            List<Service> servicesToSend = services.stream()
                     .filter(service -> projectUser.getServices().contains(service.getName()))
                     .filter(service -> hasSubscribedService(project, service))
                     .collect(toList());
 
-            for (Service service : subscribedServices) {
+            for (Service service : servicesToSend) {
                 ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
                 userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, projectUser.getRole().name());
             }
