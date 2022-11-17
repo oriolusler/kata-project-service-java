@@ -43,11 +43,8 @@ public class Exercise {
         } else {
             List<Service> services = serviceService.findAll();
 
-            List<Service> userServices = services.stream()
+            List<Service> subscribedServices = services.stream()
                     .filter(service -> projectUser.getServices().contains(service.getName()))
-                    .collect(toList());
-
-            List<Service> subscribedServices = userServices.stream()
                     .filter(service -> hasSubscribedService(project, service))
                     .collect(toList());
 
