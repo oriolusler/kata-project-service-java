@@ -1,6 +1,7 @@
 package victor.kata.projectservices;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -43,23 +44,27 @@ public class Exercise {
             List<String> projectServices = projectUser.getServices();
             List<Service> services = serviceService.findAll();
 
+            List<Service> userServices = new ArrayList<>();
             for (String serviceName : projectServices) {
                 for (Service service : services) {
                     if (serviceName.equals(service.getName())) {
-                        ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
-                        if (projectServices1 != null && projectServices1.isSubscribed()) {
-                            ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
-                            User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
-                            if (projectUser.getRole() == VIEW) {
-                                userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, VIEW.name());
-                            } else {
-                                userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, CONTRIBUTOR.name());
-                            }
-                        }
+                        userServices.add(service);
+                    }
+                }
+            }
+
+            for (Service service : userServices) {
+                ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
+                if (projectServices1 != null && projectServices1.isSubscribed()) {
+                    ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
+                    User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
+                    if (projectUser.getRole() == VIEW) {
+                        userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, VIEW.name());
+                    } else {
+                        userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, CONTRIBUTOR.name());
                     }
                 }
             }
         }
     }
-
 }
