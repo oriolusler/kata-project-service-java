@@ -26,11 +26,12 @@ public class Exercise {
     public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
         if (projectUser.getRole() == ADMIN) {
             List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
-            List<ProjectServices> subscribedProjectServices = projectServices.stream()
+
+            List<ProjectServices> subscribedServices = projectServices.stream()
                     .filter(ProjectServices::isSubscribed)
                     .collect(toList());
 
-            subscribedProjectServices.forEach(subscribedProjectService -> {
+            subscribedServices.forEach(subscribedProjectService -> {
                 ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
                 projectServicesDTO.setService(subscribedProjectService.getService());
                 User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
