@@ -59,10 +59,8 @@ public class Exercise {
     }
 
     private boolean hasSubscribedService(Project project, Service service) {
-        return getSubscribedServiceAndProject(project, service).isPresent();
-    }
-
-    private Optional<ProjectServices> getSubscribedServiceAndProject(Project project, Service service) {
-        return projectServicesService.findByServiceAndProject(service, project).filter(ProjectServices::isSubscribed);
+        return projectServicesService.findByServiceAndProject(service, project)
+                .filter(ProjectServices::isSubscribed)
+                .isPresent();
     }
 }
