@@ -49,8 +49,7 @@ public class Exercise {
 
             List<Service> subscribedServices = new ArrayList<>();
             for (Service service : userServices) {
-                Optional<ProjectServices> projectServices = getSubscribedServiceAndProject(project, service);
-                if (projectServices.isPresent()) {
+                if (getSubscribedServiceAndProject(project, service).isPresent()) {
                     subscribedServices.add(service);
                 }
             }
