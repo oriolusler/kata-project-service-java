@@ -54,9 +54,12 @@ public class Exercise {
                     .filter(service -> hasSubscribedService(project, service))
                     .collect(toList());
 
-            for (Service service : servicesToSend) {
-                ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
-                userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, projectUser.getRole().name());
+            List<ProjectServiceDto> dtos = servicesToSend.stream()
+                    .map(ProjectServiceDto::new)
+                    .collect(toList());
+
+            for (ProjectServiceDto dto : dtos) {
+                userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, projectUser.getRole().name());
             }
         }
     }
