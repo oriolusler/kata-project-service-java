@@ -32,7 +32,6 @@ public class Exercise {
     }
 
     private List<Service> determineServicesToSend(ProjectUserDTO projectUser, Project project) {
-        List<Service> servicesToSend;
         if (projectUser.getRole() == ADMIN) {
             List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
 
@@ -40,21 +39,20 @@ public class Exercise {
                     .filter(ProjectServices::isSubscribed)
                     .collect(toList());
 
-            servicesToSend = projectServices.stream()
-                    .filter(ProjectServices::isSubscribed)
-                    .map(ProjectServices::getService)
-                    .collect(toList());
+            return projectServices.stream()
+                        .filter(ProjectServices::isSubscribed)
+                        .map(ProjectServices::getService)
+                        .collect(toList());
 
         } else {
             List<Service> services = serviceService.findAll();
 
-            servicesToSend = services.stream()
-                    .filter(service -> projectUser.getServices().contains(service.getName()))
-                    .filter(service -> hasSubscribedService(project, service))
-                    .collect(toList());
+            return services.stream()
+                        .filter(service -> projectUser.getServices().contains(service.getName()))
+                        .filter(service -> hasSubscribedService(project, service))
+                        .collect(toList());
 
         }
-        return servicesToSend;
     }
 
     private void comm(ProjectUserDTO projectUser, Project project, MessageAction messageAction, User user, List<Service> servicesToSend) {
