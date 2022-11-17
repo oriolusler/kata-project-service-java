@@ -26,7 +26,7 @@ public class Exercise {
     public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
         if (projectUser.getRole() == ADMIN) {
             List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
-            List<ProjectServices> subscribedProjectServices = projectServices.stream().filter(projectService -> projectService.getProjectServiceStatus() == SUBSCRIBED).collect(Collectors.toList());
+            List<ProjectServices> subscribedProjectServices = projectServices.stream().filter(projectService -> isSubscribed(projectService)).collect(Collectors.toList());
 
             subscribedProjectServices.forEach(subscribedProjectService -> {
                 ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
@@ -42,7 +42,7 @@ public class Exercise {
                 for (Service service : services) {
                     if (serviceName.equals(service.getName())) {
                         ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
-                        if (projectServices1 != null && projectServices1.getProjectServiceStatus() == SUBSCRIBED) {
+                        if (projectServices1 != null && isSubscribed(projectServices1)) {
                             ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
                             projectServicesDTO.setService(service);
                             User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
@@ -56,5 +56,9 @@ public class Exercise {
                 }
             }
         }
+    }
+
+    private static boolean isSubscribed(ProjectServices projectService) {
+        return projectService.getProjectServiceStatus() == SUBSCRIBED;
     }
 }
