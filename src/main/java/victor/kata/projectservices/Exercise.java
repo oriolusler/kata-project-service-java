@@ -1,11 +1,10 @@
 package victor.kata.projectservices;
 
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@org.springframework.stereotype.Service
 public class Exercise {
    private final ProjectServicesService projectServicesService;
    private final UserService userService;
@@ -34,10 +33,10 @@ public class Exercise {
          });
       } else {
          List<String> projectServices = projectUser.getServices();
-         List<victor.kata.projectservices.Service> services = serviceService.findAll();
+         List<Service> services = serviceService.findAll();
 
          for (String pS : projectServices) {
-            for (victor.kata.projectservices.Service service : services) {
+            for (Service service : services) {
                if (service.getName().equals(pS)) {
                   ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
                   if (projectServices1 != null && projectServices1.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED)) {
