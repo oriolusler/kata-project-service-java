@@ -1,14 +1,10 @@
 package victor.kata.projectservices;
 
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static victor.kata.projectservices.ProjectUserRoleType.ADMIN;
-import static victor.kata.projectservices.ProjectUserRoleType.CONTRIBUTOR;
-import static victor.kata.projectservices.ProjectUserRoleType.VIEW;
 
 @org.springframework.stereotype.Service
 public class Exercise {
@@ -27,7 +23,7 @@ public class Exercise {
     public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
         User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
         List<Service> servicesToSend = determineServicesToSend(projectUser, project);
-        comm(projectUser, project, messageAction, user, servicesToSend);
+        sendServices(projectUser, project, messageAction, user, servicesToSend);
     }
 
     private List<Service> determineServicesToSend(ProjectUserDTO projectUser, Project project) {
@@ -50,7 +46,7 @@ public class Exercise {
         }
     }
 
-    private void comm(ProjectUserDTO projectUser, Project project, MessageAction messageAction, User user, List<Service> servicesToSend) {
+    private void sendServices(ProjectUserDTO projectUser, Project project, MessageAction messageAction, User user, List<Service> servicesToSend) {
         List<ProjectServiceDto> dtos = servicesToSend.stream()
                 .map(ProjectServiceDto::new)
                 .collect(toList());
