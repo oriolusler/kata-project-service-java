@@ -1,5 +1,5 @@
 package victor.kata.projectservices;
 
 public interface UserServiceHelper {
-   void sendUserToServicesOnCreate(ProjectServicesDTO projectServicesDTO, Project project, MessageAction messageAction, User user, ProjectUserDTO projectUser, String name);
+   void sendUserToServicesOnCreate(ProjectServiceDto projectServiceDTO, Project project, MessageAction messageAction, User user, ProjectUserDTO projectUser, String name);
 }

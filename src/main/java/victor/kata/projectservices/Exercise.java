@@ -2,7 +2,6 @@ package victor.kata.projectservices;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static victor.kata.projectservices.ProjectUserRoleType.ADMIN;
@@ -34,9 +33,8 @@ public class Exercise {
             User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
 
             subscribedServices.forEach(subscribedProjectService -> {
-                ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
-                projectServicesDTO.setService(subscribedProjectService.getService());
-                userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ADMIN.name());
+                ProjectServiceDto projectServiceDTO = new ProjectServiceDto(subscribedProjectService.getService());
+                userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, ADMIN.name());
             });
         } else {
             List<String> projectServices = projectUser.getServices();
@@ -47,13 +45,12 @@ public class Exercise {
                     if (serviceName.equals(service.getName())) {
                         ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
                         if (projectServices1 != null && projectServices1.isSubscribed()) {
-                            ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
-                            projectServicesDTO.setService(service);
+                            ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
                             User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
                             if (projectUser.getRole() == VIEW) {
-                                userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, VIEW.name());
+                                userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, VIEW.name());
                             } else {
-                                userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, CONTRIBUTOR.name());
+                                userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, CONTRIBUTOR.name());
                             }
                         }
                     }

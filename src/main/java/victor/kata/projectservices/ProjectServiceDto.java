@@ -1,9 +1,9 @@
 package victor.kata.projectservices;
 
-public class ProjectServicesDTO {
-   private Service service;
+public class ProjectServiceDto {
+   private final Service service;
 
-   public void setService(Service service) {
+   public ProjectServiceDto(Service service) {
       this.service = service;
    }
 
