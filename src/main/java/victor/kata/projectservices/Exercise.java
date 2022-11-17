@@ -32,10 +32,12 @@ public class Exercise {
 
             User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
 
-            projectServices.stream()
+            List<ProjectServiceDto> dtos = projectServices.stream()
                     .filter(ProjectServices::isSubscribed)
                     .map(ps -> new ProjectServiceDto(ps.getService()))
-                    .forEach(dto -> userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, ADMIN.name()));
+                    .collect(toList());
+
+            dtos.forEach(dto -> userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, ADMIN.name()));
 
         } else {
             List<String> projectServices = projectUser.getServices();
