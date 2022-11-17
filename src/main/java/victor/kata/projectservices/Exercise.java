@@ -43,7 +43,7 @@ public class Exercise {
                     .collect(toList());
 
             for (ProjectServiceDto dto : dtos) {
-                userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, ADMIN.name());
+                userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, projectUser.getRole().name());
             }
 
         } else {
