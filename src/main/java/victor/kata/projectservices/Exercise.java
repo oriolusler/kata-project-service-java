@@ -37,7 +37,7 @@ public class Exercise {
 
          for (String serviceName : projectServices) {
             for (Service service : services) {
-               if (service.getName().equals(serviceName)) {
+               if (serviceName.equals(service.getName())) {
                   ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
                   if (projectServices1 != null && projectServices1.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED)) {
                      ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
