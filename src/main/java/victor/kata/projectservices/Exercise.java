@@ -28,7 +28,7 @@ public class Exercise {
          subscribedProjectServices.forEach(subscribedProjectService -> {
             ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
             projectServicesDTO.setService(subscribedProjectService.getService());
-            User user = userService.findByUuid(projectUser.getUuid()).get();
+            User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
             userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.ADMIN.name());
          });
       } else {
@@ -42,7 +42,7 @@ public class Exercise {
                   if (projectServices1 != null && projectServices1.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED)) {
                      ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
                      projectServicesDTO.setService(service);
-                     User user = userService.findByUuid(projectUser.getUuid()).get();
+                     User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
                      if (projectUser.getRole().equals(ProjectUserRoleType.VIEW)) {
                         userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.VIEW.name());
                      } else {
