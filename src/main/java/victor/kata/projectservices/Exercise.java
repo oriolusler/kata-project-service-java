@@ -27,6 +27,12 @@ public class Exercise {
     public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
         User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
         List<Service> servicesToSend;
+        servicesToSend = determineServicesToSend(projectUser, project);
+        comm(projectUser, project, messageAction, user, servicesToSend);
+    }
+
+    private List<Service> determineServicesToSend(ProjectUserDTO projectUser, Project project) {
+        List<Service> servicesToSend;
         if (projectUser.getRole() == ADMIN) {
             List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
 
@@ -48,7 +54,7 @@ public class Exercise {
                     .collect(toList());
 
         }
-        comm(projectUser, project, messageAction, user, servicesToSend);
+        return servicesToSend;
     }
 
     private void comm(ProjectUserDTO projectUser, Project project, MessageAction messageAction, User user, List<Service> servicesToSend) {
