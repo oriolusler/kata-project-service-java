@@ -47,12 +47,9 @@ public class Exercise {
                     .filter(service -> projectUser.getServices().contains(service.getName()))
                     .collect(toList());
 
-            List<Service> subscribedServices = new ArrayList<>();
-            for (Service service : userServices) {
-                if (getSubscribedServiceAndProject(project, service).isPresent()) {
-                    subscribedServices.add(service);
-                }
-            }
+            List<Service> subscribedServices = userServices.stream()
+                    .filter(service -> getSubscribedServiceAndProject(project, service).isPresent())
+                    .collect(toList());
 
             for (Service service : subscribedServices) {
                 ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
