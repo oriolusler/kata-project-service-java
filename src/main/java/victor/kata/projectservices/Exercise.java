@@ -35,10 +35,6 @@ public class Exercise {
         if (projectUser.getRole() == ADMIN) {
             List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
 
-            List<ProjectServices> subscribedServices = projectServices.stream()
-                    .filter(ProjectServices::isSubscribed)
-                    .collect(toList());
-
             return projectServices.stream()
                         .filter(ProjectServices::isSubscribed)
                         .map(ProjectServices::getService)
