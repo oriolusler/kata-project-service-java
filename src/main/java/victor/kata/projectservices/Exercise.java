@@ -4,6 +4,7 @@ package victor.kata.projectservices;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static victor.kata.projectservices.ProjectUserRoleType.ADMIN;
 import static victor.kata.projectservices.ProjectUserRoleType.CONTRIBUTOR;
 import static victor.kata.projectservices.ProjectUserRoleType.VIEW;
@@ -25,7 +26,9 @@ public class Exercise {
     public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
         if (projectUser.getRole() == ADMIN) {
             List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
-            List<ProjectServices> subscribedProjectServices = projectServices.stream().filter(projectService -> projectService.isSubscribed()).collect(Collectors.toList());
+            List<ProjectServices> subscribedProjectServices = projectServices.stream()
+                    .filter(ProjectServices::isSubscribed)
+                    .collect(toList());
 
             subscribedProjectServices.forEach(subscribedProjectService -> {
                 ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
