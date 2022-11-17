@@ -48,7 +48,7 @@ public class Exercise {
                     .collect(toList());
 
             List<Service> subscribedServices = userServices.stream()
-                    .filter(service -> getSubscribedServiceAndProject(project, service).isPresent())
+                    .filter(service -> hasSubscribedService(project, service))
                     .collect(toList());
 
             for (Service service : subscribedServices) {
@@ -56,6 +56,10 @@ public class Exercise {
                 userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, projectUser.getRole().name());
             }
         }
+    }
+
+    private boolean hasSubscribedService(Project project, Service service) {
+        return getSubscribedServiceAndProject(project, service).isPresent();
     }
 
     private Optional<ProjectServices> getSubscribedServiceAndProject(Project project, Service service) {
