@@ -36,21 +36,23 @@ public class Exercise {
          List<String> projectServices = projectUser.getServices();
          List<victor.kata.projectservices.Service> services = serviceService.findAll();
 
-         projectServices.forEach(pS -> services.forEach(service -> {
-            if (service.getName().equals(pS)) {
-               ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
-               if (projectServices1 != null && projectServices1.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED)) {
-                  ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
-                  projectServicesDTO.setService(service);
-                  User user = userService.findByUuid(projectUser.getUuid()).get();
-                  if (projectUser.getRole().equals(ProjectUserRoleType.VIEW)) {
-                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.VIEW.name());
-                  } else {
-                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.CONTRIBUTOR.name());
+         for (String pS : projectServices) {
+            for (victor.kata.projectservices.Service service : services) {
+               if (service.getName().equals(pS)) {
+                  ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
+                  if (projectServices1 != null && projectServices1.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED)) {
+                     ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
+                     projectServicesDTO.setService(service);
+                     User user = userService.findByUuid(projectUser.getUuid()).get();
+                     if (projectUser.getRole().equals(ProjectUserRoleType.VIEW)) {
+                        userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.VIEW.name());
+                     } else {
+                        userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.CONTRIBUTOR.name());
+                     }
                   }
                }
             }
-         }));
+         }
       }
    }
 }
