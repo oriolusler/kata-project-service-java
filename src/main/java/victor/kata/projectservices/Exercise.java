@@ -49,8 +49,8 @@ public class Exercise {
 
             List<Service> subscribedServices = new ArrayList<>();
             for (Service service : userServices) {
-                Optional<ProjectServices> projectServices = projectServicesService.findByServiceAndProject(service, project);
-                if (projectServices.isPresent() && projectServices.get().isSubscribed()) {
+                Optional<ProjectServices> projectServices = getSubscribedServiceAndProject(project, service);
+                if (projectServices.isPresent()) {
                     subscribedServices.add(service);
                 }
             }
@@ -60,5 +60,9 @@ public class Exercise {
                 userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, projectUser.getRole().name());
             }
         }
+    }
+
+    private Optional<ProjectServices> getSubscribedServiceAndProject(Project project, Service service) {
+        return projectServicesService.findByServiceAndProject(service, project).filter(ProjectServices::isSubscribed);
     }
 }
