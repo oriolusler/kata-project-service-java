@@ -32,10 +32,10 @@ public class Exercise {
 
             User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
 
-            subscribedServices.forEach(subscribedProjectService -> {
+            for (ProjectServices subscribedProjectService : subscribedServices) {
                 ProjectServiceDto projectServiceDTO = new ProjectServiceDto(subscribedProjectService.getService());
                 userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, ADMIN.name());
-            });
+            }
         } else {
             List<String> projectServices = projectUser.getServices();
             List<Service> services = serviceService.findAll();
