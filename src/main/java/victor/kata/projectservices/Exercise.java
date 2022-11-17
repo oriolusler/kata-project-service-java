@@ -53,11 +53,7 @@ public class Exercise {
                 if (projectServices.isPresent() && projectServices.get().isSubscribed()) {
                     ProjectServiceDto projectServiceDTO = new ProjectServiceDto(service);
                     User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
-                    if (projectUser.getRole() == VIEW) {
-                        userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, VIEW.name());
-                    } else {
-                        userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, CONTRIBUTOR.name());
-                    }
+                    userServiceHelper.sendUserToServicesOnCreate(projectServiceDTO, project, messageAction, user, projectUser, projectUser.getRole().name());
                 }
             }
         }
